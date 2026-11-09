@@ -5,6 +5,7 @@ Feature: Login
   @smoke @regression
   Scenario: Successful login with valid credentials
     Given a registered ParaBank customer
+    And user clicks logout
     And user is on the ParaBank home page
     When user logs in with the registered credentials
     Then user should be logged in and see "Accounts Overview"

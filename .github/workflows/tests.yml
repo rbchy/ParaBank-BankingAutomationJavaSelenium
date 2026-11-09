@@ -20,6 +20,9 @@ jobs:
 
       - uses: browser-actions/setup-chrome@v1
 
+      - name: Probe ParaBank login behaviour
+        run: .github/scripts/probe.sh
+
       - name: Run Cucumber suite (headless Chrome)
         run: mvn -B -ntp clean test -Dheadless=true
 
@@ -33,3 +36,7 @@ jobs:
             target/cucumber.json
             target/cucumber.xml
             target/surefire-reports/
+
+      - name: Probe ParaBank login behaviour (after tests)
+        if: always()
+        run: .github/scripts/probe.sh
