@@ -162,6 +162,14 @@ public class AccountSteps {
                 "Row should show the amount $" + TestContext.lastAmount + ": " + r));
     }
 
+    @Then("the first account's transactions for amount {string} should include {string}")
+    public void firstAccountTransactionsInclude(String amount, String text) {
+        userSearchesByAmount(amount);
+        List<String> rows = new FindTransactionsPage(driver()).results();
+        Assert.assertTrue(rows.stream().anyMatch(r -> r.contains(text)),
+                "Expected a transaction \"" + text + "\" in " + rows);
+    }
+
     @Then("at least {int} transaction should be listed")
     public void atLeastTransactions(int min) {
         List<String> rows = new FindTransactionsPage(driver()).results();

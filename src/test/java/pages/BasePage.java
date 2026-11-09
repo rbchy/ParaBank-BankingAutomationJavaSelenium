@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -22,6 +23,8 @@ public abstract class BasePage {
     protected BasePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(Config.timeoutSeconds()));
+        // ParaBank redraws parts of the page by AJAX; a stale element just means "try again"
+        this.wait.ignoring(StaleElementReferenceException.class);
     }
 
     protected void open(String path) {

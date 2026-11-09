@@ -17,6 +17,7 @@ Feature: Bill Payment
       | amount        | 50               |
     Then the message "Bill Payment Complete" should be shown
     And the bill payment confirmation should show payee "Electric Company" and amount "$50.00"
+    And the first account's transactions for amount "50" should include "Bill Payment to Electric Company"
     And the first account balance should be 50.00 lower
 
   @regression @negative

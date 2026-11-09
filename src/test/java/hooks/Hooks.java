@@ -32,6 +32,10 @@ public class Hooks {
                 String body = driver.findElement(By.tagName("body")).getText();
                 System.out.println("---- FAILED: " + scenario.getName() + " @ " + driver.getCurrentUrl());
                 System.out.println(body.length() > 1500 ? body.substring(0, 1500) : body);
+                Object calls = ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
+                        "return performance.getEntriesByType('resource').map(e => e.name)"
+                        + ".filter(n => n.includes('services')).join('\\n')");
+                System.out.println("REST calls:\n" + calls);
                 System.out.println("----");
             }
         } catch (Exception e) {
