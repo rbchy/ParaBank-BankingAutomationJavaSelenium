@@ -38,7 +38,10 @@ public class FindTransactionsPage extends BasePage {
     /** Text of each result row (date, description, debit, credit). */
     public List<String> results() {
         wait.until(d -> !d.findElements(resultRows).isEmpty());
+        // with no match ParaBank still draws one placeholder row ("NaN-NaN-NaN undefined")
         return driver.findElements(resultRows).stream()
-                .map(WebElement::getText).map(String::trim).collect(Collectors.toList());
+                .map(WebElement::getText).map(String::trim)
+                .filter(t -> !t.isEmpty() && !t.contains("NaN"))
+                .collect(Collectors.toList());
     }
 }

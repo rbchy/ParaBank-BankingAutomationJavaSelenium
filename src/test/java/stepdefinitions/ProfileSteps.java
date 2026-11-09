@@ -42,6 +42,19 @@ public class ProfileSteps {
         page().clickUpdate();
     }
 
+    @Then("the form should show the registered customer's details")
+    public void formShowsRegisteredDetails() {
+        Customer c = TestContext.customer;
+        UpdateContactInfoPage page = page();
+        Assert.assertEquals(page.value("firstName"), c.firstName);
+        Assert.assertEquals(page.value("lastName"), c.lastName);
+        Assert.assertEquals(page.value("address"), c.street);
+        Assert.assertEquals(page.value("city"), c.city);
+        Assert.assertEquals(page.value("state"), c.state);
+        Assert.assertEquals(page.value("zipCode"), c.zipCode);
+        Assert.assertEquals(page.value("phone"), c.phone);
+    }
+
     @Then("reopening Update Contact Info should show the new values")
     public void reopeningShouldShowNewValues() {
         Assert.assertTrue(page().pageShows("Profile Updated"), "Update did not finish");

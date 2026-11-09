@@ -20,10 +20,7 @@ jobs:
 
       - uses: browser-actions/setup-chrome@v1
 
-      - name: Probe ParaBank login behaviour
-        run: .github/scripts/probe.sh
-
-      - name: Run Cucumber suite (headless Chrome)
+      - name: Run Cucumber suite (headless Chrome, excludes @known-defect)
         run: mvn -B -ntp clean test -Dheadless=true
 
       - name: Upload reports
@@ -37,6 +34,20 @@ jobs:
             target/cucumber.xml
             target/surefire-reports/
 
-      - name: Probe ParaBank login behaviour (after tests)
-        if: always()
-        run: .github/scripts/probe.sh
+  # Scenarios that expose defects in the public ParaBank demo (see README).
+  # They run on every push so a fix on Parasoft's side shows up here,
+  # but they do not block the build.
+  known-defects:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - uses: browser-actions/setup-chrome@v1
+      - name: Run @known-defect scenarios
+        run: mvn -B -ntp clean test -Dheadless=true "-Dcucumber.filter.tags=@known-defect"
