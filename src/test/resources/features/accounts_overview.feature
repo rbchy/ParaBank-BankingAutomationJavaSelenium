@@ -1,6 +1,9 @@
+@overview
 Feature: Accounts Overview
 
-Scenario: Verify accounts overview
-  Given user is logged into Parabank
-  When user navigates to Accounts Overview page
-  Then user should see a list of all accounts with balances
+  @smoke @regression
+  Scenario: Accounts overview lists every account and the right total
+    Given user is logged into Parabank
+    When user navigates to Accounts Overview page
+    Then user should see at least 1 account with a balance
+    And the Total row should equal the sum of the account balances

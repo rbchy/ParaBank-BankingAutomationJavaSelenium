@@ -1,8 +1,13 @@
+@transfer
 Feature: Fund Transfer
 
-  Scenario: Transfer money between accounts
+  @smoke @regression
+  Scenario: Transfer money between two own accounts
     Given user is logged into Parabank
-    When user navigates to Fund Transfer page
-    # নোট: আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স আছে এমন অ্যামাউন্ট ব্যবহার করুন
-    And user transfers amount "500" from account "12345" to account "54321"
-    Then transfer should be successful
+    And user has a second account
+    And the account balances are noted
+    When user transfers "25" from the first account to the second account
+    Then the message "Transfer Complete!" should be shown
+    And the confirmation should show "$25.00" from the first account to the second account
+    And the first account balance should be 25.00 lower
+    And the second account balance should be 25.00 higher

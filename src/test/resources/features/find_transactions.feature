@@ -1,9 +1,17 @@
+@findtransactions
 Feature: Find Transactions
 
-  Scenario: Find transactions using date range filter
+  @regression
+  Scenario: A transfer can be found by its amount
     Given user is logged into Parabank
-    When user navigates to Find Transactions page
-    # তারিখ ফরম্যাটটি MM-DD-YYYY অনুযায়ী দিন
-    And user enters date range from "01-01-2025" to "12-31-2025"
-    And user clicks the Find Transactions button for date range
-    Then a table with transaction history should be displayed
+    And user has a second account
+    And user transfers "17.25" from the first account to the second account
+    When user searches the first account's transactions for amount "17.25"
+    Then every result should mention "Funds Transfer Sent"
+
+  @regression
+  Scenario: Transactions can be found by date range
+    Given user is logged into Parabank
+    And user has a second account
+    When user searches the first account's transactions from "01-01-2020" to "12-31-2035"
+    Then at least 1 transaction should be listed

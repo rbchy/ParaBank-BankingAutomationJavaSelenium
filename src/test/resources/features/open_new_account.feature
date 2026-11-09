@@ -1,8 +1,14 @@
+@openaccount
 Feature: Open New Account
 
-  Scenario: User opens a new account
+  @smoke @regression
+  Scenario Outline: Open a new <type> account
     Given user is logged into Parabank
-    When user navigates to Open New Account page
-    And user selects account type "SAVINGS" and existing account "12345"
-    And user clicks Open New Account
-    Then new account should be created successfully
+    When user opens a new "<type>" account funded from the first account
+    Then the message "Account Opened!" should be shown
+    And the new account should be listed in Accounts Overview
+
+    Examples:
+      | type     |
+      | SAVINGS  |
+      | CHECKING |
